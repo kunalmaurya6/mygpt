@@ -15,19 +15,31 @@ app.use(cors());
 
 app.use("/api",chatRoutes);
 
-app.listen(PORT, () => {
-    console.log(`${PORT}`);
-    connectDB();
-});
+//app.listen(PORT, () => {
+//    console.log(`${PORT}`);
+//    connectDB();
+//});
+
+app.use((req,res,next)=>{
+    if(!isConnected){
+        connectDB();
+    }
+})
+
+let isConnected=false;
 
 const connectDB=async()=>{
     try{
         await mongoose.connect(MONGODB);
         console.log("Connecting with db is successful!");
+        isConnected=true;
     }catch(e){
         console.log("Fail to connect with db",e);
     }
 }
+
+export default app;
+
 
 //const API_KEY = process.env.GOOGEL_API_KEY;
 //const ai = new GoogleGenAI({

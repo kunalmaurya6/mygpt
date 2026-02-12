@@ -41,8 +41,16 @@ button:hover {
     margin: 10px;
     padding: 10px;
     height: 100%;
-    overflow: scroll;
-    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+.history::-webkit-scrollbar {
+    width: 10px;
+}
+
+.history::-webkit-scrollbar-thumb {
+    background: #363737;
+    border-radius: 10px;
 }
 
 .history li {

@@ -8,8 +8,8 @@ const router = express.Router();
 router.post("/test", async (req, res) => {
     try {
         const thread = new Thread({
-            threadId: "abcd",
-            title: "testing"
+            threadId: "1212abcd",
+            title: "testing11111"
         })
         const response = await thread.save()
         res.send(response);

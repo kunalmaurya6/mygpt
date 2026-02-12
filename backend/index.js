@@ -13,22 +13,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api",chatRoutes);
-
 //app.listen(PORT, () => {
 //    console.log(`${PORT}`);
 //    connectDB();
 //});
 
-app.use((req,res,next)=>{
-    if(!isConnected){
-        connectDB();
-    }
-})
 
 let isConnected=false;
 
 const connectDB=async()=>{
+    if(isConnected){
+        return;
+    }
     try{
         await mongoose.connect(MONGODB);
         console.log("Connecting with db is successful!");
@@ -36,6 +32,17 @@ const connectDB=async()=>{
     }catch(e){
         console.log("Fail to connect with db",e);
     }
+}
+
+app.use(async (req,res,next)=>{
+        await connectDB();
+    next();
+});
+
+app.use("/api",chatRoutes);
+
+app.get("/",(req,res)=>{
+    res.send("Server is running succesfully");
 }
 
 export default app;

@@ -43,7 +43,7 @@ app.use("/api",chatRoutes);
 
 app.get("/",(req,res)=>{
     res.send("Server is running succesfully");
-}
+});
 
 export default app;
 

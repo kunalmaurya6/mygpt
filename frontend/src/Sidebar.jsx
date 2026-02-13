@@ -1,11 +1,13 @@
 import "./Sidebar.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyContext } from "./MyContext.jsx";
 import {v1 as uuidv1} from "uuid";
 import blacklogo from "./assets/blacklogo.png";
 
 function Sidebar() {
     const {allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats} = useContext(MyContext);
+
+    const [navbar,setNavbar]=useState(false);
 
     const getAllThreads = async () => {
         try {
@@ -66,8 +68,9 @@ function Sidebar() {
     }
 
     return (
-        <section className="sidebar">
-            <button onClick={createNewChat}>
+       <>
+        <section className={`sidebar ${navbar?"active":""}`}>
+            <button className="search" onClick={createNewChat}>
                 <img src={blacklogo} alt="gpt logo" className="logo"></img>
                 <span><i className="fa-solid fa-pen-to-square"></i></span>
             </button>
@@ -77,7 +80,10 @@ function Sidebar() {
                 {
                     allThreads?.map((thread, idx) => (
                         <li key={idx} 
-                            onClick={(e) => changeThread(thread.threadId)}
+                            onClick={(e) =>{ 
+                                changeThread(thread.threadId),
+                                setNavbar(!navbar)
+                            }}
                             className={thread.threadId === currThreadId ? "highlighted": " "}
                         >
                             {thread.title}
@@ -96,6 +102,8 @@ function Sidebar() {
                 <p>By MyGPT &hearts;</p>
             </div>
         </section>
+        <span className={`menuicon ${navbar?"active":""}`} onClick={()=>setNavbar(!navbar)}><i className="fa-solid fa-bars menuicon"></i></span>
+        </>
     )
 }
 

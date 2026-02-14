@@ -1,6 +1,6 @@
 .chats {
     /*max-width: 700px;*/
-    width: 90%;
+    width: 60%;
     overflow-y: scroll;
     scrollbar-width: none;
     padding: 8rem;

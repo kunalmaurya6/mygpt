@@ -25,9 +25,11 @@ app.use((req, res, next) => {
     if (!userId) {
         userId = uuidv4();
 
+        const isProduction = process.env.NODE_ENV === "production";
+
         res.cookie("userId", userId, {
             httpOnly: true,
-            sameSite: "none",
+            sameSite: isProduction ? "none" : "lax",
             secure: true,
             maxAge:1000*60*60*24*50
         });

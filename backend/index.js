@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 //app.use(cors());
 app.use(cors({
-    origin: "https://mygpt-5622.vercel.app/",
+    origin: "https://mygpt-5622.vercel.app",
     credentials: true
 }));
 app.use(cookieParser());

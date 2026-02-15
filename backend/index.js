@@ -40,10 +40,10 @@ app.use((req, res, next) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`${PORT}`);
-    connectDB();
-});
+// app.listen(PORT, () => {
+//     console.log(`${PORT}`);
+//     connectDB();
+// });
 
 let isConnected = false;
 

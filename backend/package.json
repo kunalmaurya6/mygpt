@@ -8,15 +8,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
+    "start": "nodemon index.js",
     "vercel-start": "node index.js"
   },
   "dependencies": {
     "@google/genai": "^1.40.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "mongoose": "^9.2.0",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "uuid": "^13.0.0"
   }
 }

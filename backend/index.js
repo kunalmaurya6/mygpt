@@ -3,7 +3,9 @@ import express from "express";
 import 'dotenv/config';
 import cors from 'cors';
 import mongoose from "mongoose";
-import chatRoutes from "./routes/chat.js"
+import chatRoutes from "./routes/chat.js";
+import cookieParser from "cookie-parser";
+import { v4 as uuidv4 } from "uuid";
 
 const PORT = process.env.PORT;
 const MONGODB = process.env.MONGODB;
@@ -11,37 +13,58 @@ const MONGODB = process.env.MONGODB;
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+    origin: "https://mygpt-5622.vercel.app/",
+    credentials: true
+}));
+app.use(cookieParser());
+app.use((req, res, next) => {
+    let userId = req.cookies.userId;
 
-//app.listen(PORT, () => {
-//    console.log(`${PORT}`);
-//    connectDB();
-//});
+    if (!userId) {
+        userId = uuidv4();
 
-
-let isConnected=false;
-
-const connectDB=async()=>{
-    if(isConnected){
-        return;
+        res.cookie("userId", userId, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true
+        });
     }
-    try{
-        await mongoose.connect(MONGODB);
-        console.log("Connecting with db is successful!");
-        isConnected=true;
-    }catch(e){
-        console.log("Fail to connect with db",e);
-    }
-}
 
-app.use(async (req,res,next)=>{
-        await connectDB();
+    req.userId = userId;
     next();
 });
 
-app.use("/api",chatRoutes);
 
-app.get("/",(req,res)=>{
+app.listen(PORT, () => {
+    console.log(`${PORT}`);
+    connectDB();
+});
+
+let isConnected = false;
+
+const connectDB = async () => {
+    if (isConnected) {
+        return;
+    }
+    try {
+        await mongoose.connect(MONGODB);
+        console.log("Connecting with db is successful!");
+        isConnected = true;
+    } catch (e) {
+        console.log("Fail to connect with db", e);
+    }
+}
+
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
+
+app.use("/api", chatRoutes);
+
+app.get("/", (req, res) => {
     res.send("Server is running succesfully");
 });
 

@@ -28,7 +28,8 @@ app.use((req, res, next) => {
         res.cookie("userId", userId, {
             httpOnly: true,
             sameSite: "none",
-            secure: true
+            secure: true,
+            maxAge:1000*60*60*24*50
         });
     }
 
